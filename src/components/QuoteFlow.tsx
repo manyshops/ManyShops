@@ -12,6 +12,7 @@ import {
   type QuoteNeedsInput,
   type QuoteResponse
 } from '@/lib/quote-types';
+import { apiUrl } from '@/lib/api-base';
 import { CheckoutPanel } from './quote/CheckoutPanel';
 import { ManualPricePanel } from './quote/ManualPricePanel';
 import { ProcessingOverlay } from './quote/ProcessingOverlay';
@@ -119,7 +120,7 @@ export function QuoteFlow() {
       }
       try {
         const response = await fetch(
-          `/api/quote?url=${encodeURIComponent(productUrl)}&quantity=${quantity}`
+          apiUrl(`/api/quote?url=${encodeURIComponent(productUrl)}&quantity=${quantity}`)
         );
         if (!response.ok) return;
 
@@ -149,7 +150,7 @@ export function QuoteFlow() {
     setError(null);
 
     try {
-      const response = await fetch('/api/quote', {
+      const response = await fetch(apiUrl('/api/quote'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, quantity, manualPriceTry })
@@ -188,7 +189,7 @@ export function QuoteFlow() {
     setOrderError(null);
 
     try {
-      const response = await fetch('/api/orders', {
+      const response = await fetch(apiUrl('/api/orders'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
