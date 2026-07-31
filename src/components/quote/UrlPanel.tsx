@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, BadgeCheck, Link2, Minus, Plus, ShieldCheck, TriangleAlert } from 'lucide-react';
+import { ArrowRight, Link2, Minus, Plus, TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { identifyStore } from '@/lib/store';
@@ -74,13 +74,13 @@ export function UrlPanel({
             value={url}
             onChange={(event) => onUrlChange(event.target.value)}
             placeholder={t('placeholder')}
-            aria-describedby={error ? 'url-error' : 'url-hint'}
+            aria-describedby={error ? 'url-error' : undefined}
             aria-invalid={error ? 'true' : undefined}
             className="w-full rounded-2xl border border-navy-900/12 bg-white py-4 pe-4 ps-12 text-base text-navy-900 shadow-sm outline-none transition-colors placeholder:text-navy-800/35 focus:border-teal-500"
           />
         </div>
 
-        {store ? (
+        {store && (
           <div className="pt-1">
             <StoreBadge
               brand={store.brand}
@@ -89,10 +89,6 @@ export function UrlPanel({
               label={t('detected')}
             />
           </div>
-        ) : (
-          <p id="url-hint" className="text-sm text-navy-800/55">
-            {t('hint')}
-          </p>
         )}
       </div>
 
@@ -152,21 +148,6 @@ export function UrlPanel({
           {error}
         </p>
       )}
-
-      <ul className="flex flex-wrap gap-x-5 gap-y-2 border-t border-navy-900/8 pt-4 text-xs font-medium text-navy-800/60">
-        <li className="inline-flex items-center gap-1.5">
-          <BadgeCheck aria-hidden="true" className="size-4 text-teal-500" />
-          <span className="numeric">{t('trust.rate')}</span>
-        </li>
-        <li className="inline-flex items-center gap-1.5">
-          <ShieldCheck aria-hidden="true" className="size-4 text-teal-500" />
-          {t('trust.noCard')}
-        </li>
-        <li className="inline-flex items-center gap-1.5">
-          <BadgeCheck aria-hidden="true" className="size-4 text-teal-500" />
-          {t('trust.transparent')}
-        </li>
-      </ul>
     </form>
   );
 }

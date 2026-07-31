@@ -29,12 +29,6 @@
     "submit": "Calculate my price",
     "submitShort": "Calculate",
     "detected": "Store detected",
-    "hint": "Works with any Turkish store — fashion, electronics, home, cosmetics.",
-    "trust": {
-      "rate": "One price, fixed until delivery",
-      "noCard": "No card, no prepayment",
-      "transparent": "No fees added at the door"
-    },
     "cta": "Get my price free",
     "secondaryCta": "See how it works",
     "marquee": "Works with links from stores like these",
@@ -53,81 +47,18 @@
       "price": "Finalising your price"
     }
   },
-  "receipt": {
-    "eyebrow": "Your landed price",
-    "title": "All in, delivered",
-    "from": "From",
-    "saving": "You save {amount}",
-    "quantity": "Quantity",
+  "cart": {
+    "eyebrow": "Your order",
+    "title": "Products added",
+    "quantity": "Qty",
     "total": "Total, cash on delivery",
-    "actions": {
-      "continue": "Continue to delivery",
-      "back": "Try another link"
-    },
-    "disclaimer": "This price is final unless the store changes its listed price before we buy.",
-    "included": {
-      "product": "The product itself, bought for you in Turkey",
-      "sourcing": "Sourcing, purchase and order support",
-      "shipping": "Air freight all the way to Lebanon",
-      "packaging": "Protective packaging for the journey"
-    },
-    "allInclusive": "One all-inclusive price. Nothing is added at delivery.",
-    "checkingDiscount": "Checking the store for a better price…"
-  },
-  "checkout": {
-    "eyebrow": "Almost there",
-    "title": "Where should we deliver?",
-    "subtitle": "No payment now. You pay {amount} in cash when the parcel reaches you.",
-    "fields": {
-      "fullName": "Full name",
-      "fullNamePlaceholder": "Your name as it appears on your ID",
-      "phone": "Mobile number",
-      "phonePlaceholder": "03 123 456",
-      "phoneHint": "Lebanese mobile — we confirm your order on WhatsApp.",
-      "region": "Governorate",
-      "regionPlaceholder": "Choose your area",
-      "address": "Delivery address",
-      "addressPlaceholder": "Street, building, floor",
-      "landmark": "Nearby landmark",
-      "landmarkPlaceholder": "Optional — helps the driver find you",
-      "note": "Note for us",
-      "notePlaceholder": "Optional — size, colour, or anything else"
-    },
-    "regions": {
-      "beirut": "Beirut",
-      "mount-lebanon": "Mount Lebanon",
-      "north": "North",
-      "akkar": "Akkar",
-      "bekaa": "Bekaa",
-      "baalbek-hermel": "Baalbek-Hermel",
-      "south": "South",
-      "nabatieh": "Nabatieh"
-    },
-    "submit": "Place order",
-    "submitting": "Placing your order…",
-    "back": "Back to price",
-    "validation": {
-      "fullName": "Please enter your full name.",
-      "phone": "Enter a valid Lebanese mobile number.",
-      "region": "Choose your governorate.",
-      "address": "Please give us enough detail to find you."
-    }
-  },
-  "success": {
-    "eyebrow": "Order received",
-    "title": "We are on it",
-    "subtitle": "Keep your reference — you will need it if you contact us.",
-    "reference": "Reference",
-    "totalDue": "Due on delivery",
-    "whatsapp": "Confirm on WhatsApp",
-    "whatsappHint": "Sending us the details on WhatsApp gets your order moving fastest.",
-    "newOrder": "Order something else",
-    "next": {
-      "title": "What happens now",
-      "one": "We confirm the item and price with you.",
-      "two": "We buy it in Turkey and fly it to Lebanon.",
-      "three": "A driver delivers it and collects the cash."
-    }
+    "addAnother": "Add another product",
+    "confirm": "Confirm order on WhatsApp",
+    "whatsappUnavailable": "WhatsApp isn't set up yet — contact us directly.",
+    "remove": "Remove",
+    "refining": "Checking for a better price…",
+    "allInclusive": "One all-inclusive price per product. Nothing is added at delivery.",
+    "empty": "No products yet. Paste a link to get your first price."
   },
   "errors": {
     "invalid_url": "That does not look like a product link. Copy the link from the product page itself.",
@@ -136,8 +67,7 @@
     "price_not_found": "We found the page but could not read a price on it.",
     "unsupported_currency": "This page lists prices in {currency}. We can only quote Turkish lira listings.",
     "rate_limited": "That is a lot of links at once. Give it a minute and try again.",
-    "network": "Something went wrong on our side. Please try again.",
-    "orderFailed": "We could not place the order. Please check your details and try again."
+    "network": "Something went wrong on our side. Please try again."
   },
   "manualPrice": {
     "title": "Enter the price yourself",
@@ -161,8 +91,8 @@
         "body": "Product, service fee, air freight and packaging, itemised in dollars. Nothing is added afterwards."
       },
       "confirm": {
-        "title": "Confirm delivery",
-        "body": "Give us your name, mobile and address. No card, no deposit, no online payment."
+        "title": "Confirm on WhatsApp",
+        "body": "Add as many links as you like, then send the whole cart in one message. No card, no deposit, no online payment."
       },
       "receive": {
         "title": "Pay on delivery",

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: manyshops-api
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_WHATSAPP_NUMBER
+        sync: false
+      - key: STATIC_SITE_ORIGIN
+        value: https://manyshops.site.je
+      - key: SCRAPER_API_KEY
+        sync: false
