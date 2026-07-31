@@ -1,0 +1,30 @@
+name: Deploy static site to InfinityFree
+
+on:
+  push:
+    branches: [static-site]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ secrets.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          username: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          password: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          local-dir: ./out/
+          server-dir: ./htdocs/

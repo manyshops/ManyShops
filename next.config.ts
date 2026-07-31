@@ -7,22 +7,12 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  // The scraper only ever renders remote imagery through <img> with an explicit
-  // allowlist check, so next/image remote patterns stay closed by default.
+  // Static export (this branch is built for InfinityFree, which only serves
+  // static files): no Node server, so no next/image optimizer or `headers()`.
+  output: 'export',
   images: {
+    unoptimized: true,
     formats: ['image/avif', 'image/webp']
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'X-Frame-Options', value: 'SAMEORIGIN' }
-        ]
-      }
-    ];
   }
 };
 
