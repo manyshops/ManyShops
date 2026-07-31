@@ -1,0 +1,246 @@
+{
+  "meta": {
+    "siteName": "ManyShops",
+    "title": "ManyShops — Buy from any Turkish store, pay cash on delivery in Lebanon",
+    "description": "Paste a link from any Turkish online store. ManyShops shows the full landed price in USD — product, service fee, shipping and packaging — and delivers to your door in Lebanon. Cash on delivery, no card required.",
+    "ogAlt": "ManyShops — Turkish shopping delivered to Lebanon",
+    "faqTitle": "Frequently asked questions about ordering from Turkey to Lebanon",
+    "faqDescription": "How ManyShops pricing, shipping weight, delivery times and cash on delivery work.",
+    "howTitle": "How to order from a Turkish store to Lebanon",
+    "howDescription": "A four-step walkthrough: paste the product link, review the landed cost, confirm delivery details, and pay cash when it arrives."
+  },
+  "nav": {
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "start": "Get a price",
+    "menu": "Open menu",
+    "close": "Close menu",
+    "language": "Language"
+  },
+  "hero": {
+    "badge": "Cash on delivery across Lebanon",
+    "title": "Any Turkish store.",
+    "titleAccent": "Delivered to your door.",
+    "subtitle": "Paste any product link from Turkey and see your all-in price in dollars — delivered, nothing added later. Pay cash when it reaches you in Lebanon.",
+    "inputLabel": "Product link",
+    "placeholder": "Paste the product link here",
+    "quantityLabel": "Quantity",
+    "submit": "Calculate my price",
+    "submitShort": "Calculate",
+    "detected": "Store detected",
+    "hint": "Works with any Turkish store — fashion, electronics, home, cosmetics.",
+    "trust": {
+      "rate": "One price, fixed until delivery",
+      "noCard": "No card, no prepayment",
+      "transparent": "No fees added at the door"
+    },
+    "cta": "Get my price free",
+    "secondaryCta": "See how it works",
+    "marquee": "Works with links from stores like these",
+    "proof": {
+      "stores": "Turkish stores you can order from",
+      "regions": "Governorates we deliver to",
+      "upfront": "Paid upfront — you pay on delivery"
+    }
+  },
+  "processing": {
+    "title": "Working out your price",
+    "steps": {
+      "store": "Recognising the store",
+      "product": "Reading the product page",
+      "weight": "Preparing your delivery",
+      "price": "Finalising your price"
+    }
+  },
+  "receipt": {
+    "eyebrow": "Your landed price",
+    "title": "All in, delivered",
+    "from": "From",
+    "saving": "You save {amount}",
+    "quantity": "Quantity",
+    "total": "Total, cash on delivery",
+    "actions": {
+      "continue": "Continue to delivery",
+      "back": "Try another link"
+    },
+    "disclaimer": "This price is final unless the store changes its listed price before we buy.",
+    "included": {
+      "product": "The product itself, bought for you in Turkey",
+      "sourcing": "Sourcing, purchase and order support",
+      "shipping": "Air freight all the way to Lebanon",
+      "packaging": "Protective packaging for the journey"
+    },
+    "allInclusive": "One all-inclusive price. Nothing is added at delivery.",
+    "checkingDiscount": "Checking the store for a better price…"
+  },
+  "checkout": {
+    "eyebrow": "Almost there",
+    "title": "Where should we deliver?",
+    "subtitle": "No payment now. You pay {amount} in cash when the parcel reaches you.",
+    "fields": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Your name as it appears on your ID",
+      "phone": "Mobile number",
+      "phonePlaceholder": "03 123 456",
+      "phoneHint": "Lebanese mobile — we confirm your order on WhatsApp.",
+      "region": "Governorate",
+      "regionPlaceholder": "Choose your area",
+      "address": "Delivery address",
+      "addressPlaceholder": "Street, building, floor",
+      "landmark": "Nearby landmark",
+      "landmarkPlaceholder": "Optional — helps the driver find you",
+      "note": "Note for us",
+      "notePlaceholder": "Optional — size, colour, or anything else"
+    },
+    "regions": {
+      "beirut": "Beirut",
+      "mount-lebanon": "Mount Lebanon",
+      "north": "North",
+      "akkar": "Akkar",
+      "bekaa": "Bekaa",
+      "baalbek-hermel": "Baalbek-Hermel",
+      "south": "South",
+      "nabatieh": "Nabatieh"
+    },
+    "submit": "Place order",
+    "submitting": "Placing your order…",
+    "back": "Back to price",
+    "validation": {
+      "fullName": "Please enter your full name.",
+      "phone": "Enter a valid Lebanese mobile number.",
+      "region": "Choose your governorate.",
+      "address": "Please give us enough detail to find you."
+    }
+  },
+  "success": {
+    "eyebrow": "Order received",
+    "title": "We are on it",
+    "subtitle": "Keep your reference — you will need it if you contact us.",
+    "reference": "Reference",
+    "totalDue": "Due on delivery",
+    "whatsapp": "Confirm on WhatsApp",
+    "whatsappHint": "Sending us the details on WhatsApp gets your order moving fastest.",
+    "newOrder": "Order something else",
+    "next": {
+      "title": "What happens now",
+      "one": "We confirm the item and price with you.",
+      "two": "We buy it in Turkey and fly it to Lebanon.",
+      "three": "A driver delivers it and collects the cash."
+    }
+  },
+  "errors": {
+    "invalid_url": "That does not look like a product link. Copy the link from the product page itself.",
+    "store_blocked": "{store} blocks automated readers, so we could not read the price.",
+    "store_unreachable": "We could not reach {store}. Check the link and try again.",
+    "price_not_found": "We found the page but could not read a price on it.",
+    "unsupported_currency": "This page lists prices in {currency}. We can only quote Turkish lira listings.",
+    "rate_limited": "That is a lot of links at once. Give it a minute and try again.",
+    "network": "Something went wrong on our side. Please try again.",
+    "orderFailed": "We could not place the order. Please check your details and try again."
+  },
+  "manualPrice": {
+    "title": "Enter the price yourself",
+    "subtitle": "Open the product page, copy the price in Turkish lira, and paste it below. Everything else works the same.",
+    "label": "Price in Turkish lira (₺)",
+    "placeholder": "1299.90",
+    "submit": "Calculate with this price",
+    "invalid": "Enter the lira price as a number."
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Four steps, no surprises",
+    "subtitle": "From a link you found while scrolling to a parcel at your door.",
+    "steps": {
+      "paste": {
+        "title": "Paste the link",
+        "body": "Any Turkish online store. We recognise the shop automatically — there is no list to pick from."
+      },
+      "price": {
+        "title": "See the real price",
+        "body": "Product, service fee, air freight and packaging, itemised in dollars. Nothing is added afterwards."
+      },
+      "confirm": {
+        "title": "Confirm delivery",
+        "body": "Give us your name, mobile and address. No card, no deposit, no online payment."
+      },
+      "receive": {
+        "title": "Pay on delivery",
+        "body": "We buy it, fly it in, and a driver brings it to you. You hand over the cash then."
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "One price. Everything in it.",
+    "subtitle": "You see a single delivered figure before you commit, and that is the figure you hand over.",
+    "rows": {
+      "allIn": {
+        "title": "One all-in price",
+        "body": "Product, sourcing, air freight and packaging arrive as a single number in dollars. There is no line you have to add up."
+      },
+      "fixed": {
+        "title": "Fixed at quote time",
+        "body": "Your price is locked the moment you see it. Currency moves between your quote and your delivery are our problem, not yours."
+      },
+      "noSurprises": {
+        "title": "Nothing added later",
+        "body": "No customs surcharge at the door, no handling fee, no rounding up. The driver collects exactly what you were quoted."
+      },
+      "cod": {
+        "title": "Paid in cash, on delivery",
+        "body": "Nothing leaves your pocket until the parcel is in your hands. No card, no deposit, no online payment at any point."
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Everything people ask us",
+    "items": [
+      {
+        "q": "Which Turkish stores can I order from?",
+        "a": "Any of them. Paste a link from any Turkish online store and ManyShops recognises the shop from the link itself. There is no approved-store list and no store you have to pick from a menu."
+      },
+      {
+        "q": "What is included in the price I see?",
+        "a": "Everything: the product, buying it on your behalf in Turkey, air freight to Lebanon, and protective packaging. The figure on your quote is the figure you pay the driver — there is nothing to add on top."
+      },
+      {
+        "q": "Do I pay shipping or customs separately?",
+        "a": "No. Shipping is already inside the price you are shown, and there is no customs surcharge, handling fee or delivery charge collected at the door."
+      },
+      {
+        "q": "Do I pay anything upfront?",
+        "a": "No. There is no card, no deposit and no online payment anywhere in this service. You pay the full amount in cash when the parcel is handed to you in Lebanon."
+      },
+      {
+        "q": "Can the price change after I order?",
+        "a": "Your price is fixed when you see it and does not move with the exchange rate. The only thing that can change it is the store itself changing its listed price before we complete the purchase, and if that happens we contact you with the new figure before spending anything."
+      },
+      {
+        "q": "What if the store is running a discount?",
+        "a": "We quote you on the discounted price the store is actually charging, not the crossed-out one. If a listing is on sale, your quote shows what you save."
+      },
+      {
+        "q": "Where in Lebanon do you deliver?",
+        "a": "All eight governorates: Beirut, Mount Lebanon, North, Akkar, Bekaa, Baalbek-Hermel, South and Nabatieh."
+      },
+      {
+        "q": "How long does delivery take?",
+        "a": "We confirm your order with you first, then buy the item in Turkey and fly it to Lebanon before a driver brings it to your address. We give you a timing estimate when we confirm."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Turkish shopping, delivered to Lebanon, paid in cash.",
+    "product": "Product",
+    "company": "Company",
+    "rights": "All rights reserved.",
+    "builtIn": "Serving all of Lebanon."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "loading": "Loading",
+    "close": "Close"
+  }
+}

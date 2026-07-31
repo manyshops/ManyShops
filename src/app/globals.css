@@ -1,0 +1,274 @@
+@import 'tailwindcss';
+/*
+ ---break---
+ */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Brand tokens sampled from /public/logo.svg — the navy of the bag, the teal of
+ * the route line and the "shops" wordmark, and the coral of the Lebanon pin.
+ */
+@theme {
+  --color-navy-950: #071729;
+  --color-navy-900: #0b2340;
+  --color-navy-800: #102f54;
+  --color-navy-700: #163b68;
+  --color-navy-600: #1d4a80;
+  --color-navy-500: #2a6099;
+
+  --color-teal-500: #16b1ac;
+  --color-teal-400: #29c6c0;
+  --color-teal-300: #5fdad5;
+  --color-teal-100: #d3f4f2;
+
+  --color-coral-600: #e0432a;
+  --color-coral-500: #f65a3f;
+  --color-coral-400: #ff7a63;
+  --color-coral-100: #ffe2dc;
+
+  --color-sand-50: #f8fafc;
+  --color-sand-100: #eef2f7;
+  --color-sand-200: #dde5ee;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    'Noto Sans', 'Liberation Sans', Arial, sans-serif;
+  --font-arabic:
+    'Segoe UI', 'Noto Naskh Arabic', 'Geeza Pro', 'Arabic Typesetting', Tahoma,
+    ui-sans-serif, system-ui, sans-serif;
+
+  --radius-4xl: 2rem;
+  --radius-5xl: 2.75rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --surface: #ffffff;
+    --ink: var(--color-navy-900);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html[dir='rtl'] body {
+    font-family: var(--font-arabic);
+  }
+
+  body {
+    background-color: var(--color-sand-50);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-teal-300);
+    color: var(--color-navy-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Numerals stay Latin in Arabic so prices read the way Lebanese sellers quote them. */
+  html[dir='rtl'] .numeric {
+    font-family: var(--font-sans);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+}
+
+@layer components {
+  /*
+   * The 3D flip stage. Both faces occupy the same grid cell so the container
+   * height is driven by whichever face is taller, and GSAP only animates
+   * rotation — no layout thrash mid-animation.
+   */
+  .flip-stage {
+    perspective: 2200px;
+    perspective-origin: 50% 45%;
+  }
+
+  .flip-deck {
+    display: grid;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .flip-face {
+    grid-area: 1 / 1;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .flip-face--back {
+    transform: rotateY(180deg);
+  }
+
+  .glass-card {
+    /*
+     * Near-solid rather than truly glassy: the card now floats over the hero's
+     * colour blocks, and anything translucent lets them bleed through the
+     * form fields and wreck legibility.
+     */
+    background: color-mix(in srgb, white 97%, transparent);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, transparent);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-navy-950) 4%, transparent),
+      0 24px 60px -24px color-mix(in srgb, var(--color-navy-950) 28%, transparent);
+  }
+
+  /* Perforated tear-line between the receipt body and its total. */
+  .receipt-tear {
+    height: 1px;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-navy-700) 24%, transparent) 0 6px,
+      transparent 6px 12px
+    );
+    background-size: 12px 1px;
+    background-repeat: repeat-x;
+  }
+
+  .aurora {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Anything GSAP animates in is hidden until it does, so nothing flashes first. */
+.gsap-prepare {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .gsap-prepare {
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/*
+ ---break---
+ */
+@theme inline {
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+  --animate-shiny-text: shiny-text 8s infinite
+;
+  @keyframes shiny-text {
+  0%, 90%, 100% {
+    background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+  30%, 60% {
+    background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);
+    }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);
+    }
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);
+    }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  }}
+/* Background refinement found a cheaper price — draw the eye to the drop. */
+@keyframes pricedrop {
+  0% {
+    transform: translateY(-40%) scale(1.12);
+    opacity: 0;
+    color: var(--color-teal-300);
+  }
+  60% {
+    color: var(--color-teal-300);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
