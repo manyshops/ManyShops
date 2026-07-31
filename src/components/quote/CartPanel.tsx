@@ -1,7 +1,7 @@
 'use client';
 
 import gsap from 'gsap';
-import { Loader2, ShieldCheck, Store, X } from 'lucide-react';
+import { Loader2, Store, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { formatUsd } from '@/lib/pricing';
@@ -120,24 +120,20 @@ export function CartPanel({ items, active, whatsappUrl, onRemove, onAddAnother }
         </div>
       )}
 
-      <p className="flex items-start gap-2 rounded-2xl bg-sand-100/80 px-4 py-3 text-xs leading-relaxed text-navy-800/70">
-        <ShieldCheck aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-teal-500" />
-        {t('allInclusive')}
-      </p>
-
-      <div className="flex flex-col gap-1">
-        {/* Styled as a tear-line with a stitched-on "+", the same perforation
-            as the receipt divider above — this is where you add a line, not
-            a generic secondary button. */}
+      <div className="flex flex-col gap-3">
+        {/* A dashed "add-a-slot" pill, not a subtle link — teal to sit
+            clearly apart from the coral confirm action below it. The plus
+            badge spins a quarter-turn on hover, a small nod to "adding" as
+            a live, physical action rather than a static click. */}
         <button
           type="button"
           onClick={onAddAnother}
-          className="group relative flex w-full flex-col items-center gap-2 pb-3 pt-1 text-sm font-semibold text-navy-800/70 transition-colors hover:text-teal-600"
+          className="group relative inline-flex w-full items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-teal-500/45 bg-teal-500/[0.06] px-6 py-4 text-base font-bold text-teal-600 transition-all hover:-translate-y-0.5 hover:border-teal-500 hover:bg-teal-500/10"
         >
-          <span aria-hidden="true" className="receipt-tear relative h-px w-full">
-            <span className="absolute left-1/2 top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-dashed border-navy-900/20 bg-white transition-all group-hover:scale-110 group-hover:border-teal-500">
-              <span className="absolute h-3.5 w-0.5 rounded-full bg-navy-800/55 transition-colors group-hover:bg-teal-500" />
-              <span className="absolute h-0.5 w-3.5 rounded-full bg-navy-800/55 transition-colors group-hover:bg-teal-500" />
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-teal-500 text-white shadow-md shadow-teal-500/30 transition-transform duration-300 group-hover:rotate-90">
+            <span className="relative flex size-3.5 items-center justify-center">
+              <span className="absolute h-3.5 w-0.5 rounded-full bg-white" />
+              <span className="absolute h-0.5 w-3.5 rounded-full bg-white" />
             </span>
           </span>
           {t('addAnother')}
