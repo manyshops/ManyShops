@@ -157,7 +157,7 @@ export function QuoteFlow() {
       const data = (await response.json()) as QuoteResponse;
 
       if (isQuote(data)) {
-        setCart((previous) => [...previous, { id: crypto.randomUUID(), quote: data }]);
+        setCart((previous) => [...previous, { id: crypto.randomUUID(), quote: data, note: '' }]);
         setManualReason(null);
         setUrl('');
         setQuantity(1);
@@ -202,8 +202,12 @@ export function QuoteFlow() {
     setCart((previous) => previous.filter((item) => item.id !== id));
   }
 
+  function updateNote(id: string, note: string) {
+    setCart((previous) => previous.map((item) => (item.id === id ? { ...item, note } : item)));
+  }
+
   const whatsappUrl = useMemo(
-    () => buildCartWhatsAppLink(cart.map((item) => item.quote), locale),
+    () => buildCartWhatsAppLink(cart, locale),
     [cart, locale]
   );
 
@@ -225,6 +229,7 @@ export function QuoteFlow() {
             active={active}
             whatsappUrl={whatsappUrl}
             onRemove={removeFromCart}
+            onNoteChange={updateNote}
             onAddAnother={addAnother}
           />
         );

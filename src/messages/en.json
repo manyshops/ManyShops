@@ -53,6 +53,7 @@
     "quantity": "Qty",
     "total": "Total, cash on delivery",
     "addAnother": "Add another product",
+    "notePlaceholder": "Size, colour, or other detail (optional)",
     "confirm": "Confirm order on WhatsApp",
     "whatsappUnavailable": "WhatsApp isn't set up yet — contact us directly.",
     "remove": "Remove",
