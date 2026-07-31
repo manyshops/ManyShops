@@ -1,7 +1,7 @@
 'use client';
 
 import gsap from 'gsap';
-import { Loader2, MessageCircle, Plus, ShieldCheck, Store, X } from 'lucide-react';
+import { Loader2, ShieldCheck, Store, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { formatUsd } from '@/lib/pricing';
@@ -125,29 +125,60 @@ export function CartPanel({ items, active, whatsappUrl, onRemove, onAddAnother }
         {t('allInclusive')}
       </p>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col gap-1">
+        {/* Styled as a tear-line with a stitched-on "+", the same perforation
+            as the receipt divider above — this is where you add a line, not
+            a generic secondary button. */}
         <button
           type="button"
           onClick={onAddAnother}
-          className="inline-flex items-center gap-2 rounded-2xl border border-navy-900/12 px-5 py-4 text-sm font-semibold text-navy-800 transition-colors hover:bg-sand-100"
+          className="group relative flex w-full flex-col items-center gap-2 pb-3 pt-1 text-sm font-semibold text-navy-800/70 transition-colors hover:text-teal-600"
         >
-          <Plus aria-hidden="true" className="size-4" />
+          <span aria-hidden="true" className="receipt-tear relative h-px w-full">
+            <span className="absolute left-1/2 top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-dashed border-navy-900/20 bg-white transition-all group-hover:scale-110 group-hover:border-teal-500">
+              <span className="absolute h-3.5 w-0.5 rounded-full bg-navy-800/55 transition-colors group-hover:bg-teal-500" />
+              <span className="absolute h-0.5 w-3.5 rounded-full bg-navy-800/55 transition-colors group-hover:bg-teal-500" />
+            </span>
+          </span>
           {t('addAnother')}
         </button>
 
         {whatsappUrl ? (
+          // Bubble-shaped rather than a plain pill — three corners rounded,
+          // the fourth pulled in to read as a chat-bubble tail. The icon is a
+          // bubble-with-checkmark: this message, once sent, is the order.
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="group inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-coral-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-coral-500/30 transition-all hover:-translate-y-0.5 hover:bg-coral-400"
+            className="group relative inline-flex w-full items-center justify-center gap-3 rounded-3xl rounded-es-lg bg-coral-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-coral-500/30 transition-all hover:-translate-y-0.5 hover:bg-coral-400"
           >
-            <MessageCircle aria-hidden="true" className="size-5" />
+            <span className="relative flex size-6 shrink-0 items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-6">
+                <path
+                  d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v6A2.5 2.5 0 0 1 17 15H9.8l-3.8 3v-3H7A2.5 2.5 0 0 1 4.5 12.5v-6Z"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M8.3 9.6l2 2 4.7-4.7"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="absolute -end-0.5 -top-0.5 flex size-2.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-white/70" />
+                <span className="relative inline-flex size-2.5 rounded-full bg-white" />
+              </span>
+            </span>
             {t('confirm')}
           </a>
         ) : (
           items.length > 0 && (
-            <p className="flex flex-1 items-center justify-center rounded-2xl bg-navy-900/6 px-6 py-4 text-sm font-medium text-navy-800/60">
+            <p className="flex w-full items-center justify-center rounded-2xl bg-navy-900/6 px-6 py-4 text-sm font-medium text-navy-800/60">
               {t('whatsappUnavailable')}
             </p>
           )
