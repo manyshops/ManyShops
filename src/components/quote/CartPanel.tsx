@@ -1,7 +1,7 @@
 'use client';
 
 import gsap from 'gsap';
-import { Loader2, MessageCircle, Plus, ShieldCheck, Store, X } from 'lucide-react';
+import { Loader2, Store, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { formatUsd } from '@/lib/pricing';
@@ -120,34 +120,61 @@ export function CartPanel({ items, active, whatsappUrl, onRemove, onAddAnother }
         </div>
       )}
 
-      <p className="flex items-start gap-2 rounded-2xl bg-sand-100/80 px-4 py-3 text-xs leading-relaxed text-navy-800/70">
-        <ShieldCheck aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-teal-500" />
-        {t('allInclusive')}
-      </p>
-
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col gap-3">
+        {/* A dashed "add-a-slot" pill, not a subtle link — teal to sit
+            clearly apart from the coral confirm action below it. The plus
+            badge spins a quarter-turn on hover, a small nod to "adding" as
+            a live, physical action rather than a static click. */}
         <button
           type="button"
           onClick={onAddAnother}
-          className="inline-flex items-center gap-2 rounded-2xl border border-navy-900/12 px-5 py-4 text-sm font-semibold text-navy-800 transition-colors hover:bg-sand-100"
+          className="group relative inline-flex w-full items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-teal-500/45 bg-teal-500/[0.06] px-6 py-4 text-base font-bold text-teal-600 transition-all hover:-translate-y-0.5 hover:border-teal-500 hover:bg-teal-500/10"
         >
-          <Plus aria-hidden="true" className="size-4" />
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-teal-500 text-white shadow-md shadow-teal-500/30 transition-transform duration-300 group-hover:rotate-90">
+            <span className="relative flex size-3.5 items-center justify-center">
+              <span className="absolute h-3.5 w-0.5 rounded-full bg-white" />
+              <span className="absolute h-0.5 w-3.5 rounded-full bg-white" />
+            </span>
+          </span>
           {t('addAnother')}
         </button>
 
         {whatsappUrl ? (
+          // Bubble-shaped rather than a plain pill — three corners rounded,
+          // the fourth pulled in to read as a chat-bubble tail. The icon is a
+          // bubble-with-checkmark: this message, once sent, is the order.
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="group inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-coral-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-coral-500/30 transition-all hover:-translate-y-0.5 hover:bg-coral-400"
+            className="group relative inline-flex w-full items-center justify-center gap-3 rounded-3xl rounded-es-lg bg-coral-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-coral-500/30 transition-all hover:-translate-y-0.5 hover:bg-coral-400"
           >
-            <MessageCircle aria-hidden="true" className="size-5" />
+            <span className="relative flex size-6 shrink-0 items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-6">
+                <path
+                  d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v6A2.5 2.5 0 0 1 17 15H9.8l-3.8 3v-3H7A2.5 2.5 0 0 1 4.5 12.5v-6Z"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M8.3 9.6l2 2 4.7-4.7"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="absolute -end-0.5 -top-0.5 flex size-2.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-white/70" />
+                <span className="relative inline-flex size-2.5 rounded-full bg-white" />
+              </span>
+            </span>
             {t('confirm')}
           </a>
         ) : (
           items.length > 0 && (
-            <p className="flex flex-1 items-center justify-center rounded-2xl bg-navy-900/6 px-6 py-4 text-sm font-medium text-navy-800/60">
+            <p className="flex w-full items-center justify-center rounded-2xl bg-navy-900/6 px-6 py-4 text-sm font-medium text-navy-800/60">
               {t('whatsappUnavailable')}
             </p>
           )
