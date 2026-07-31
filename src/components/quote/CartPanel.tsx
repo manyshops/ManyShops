@@ -164,7 +164,7 @@ export function CartPanel({
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="group relative inline-flex w-full items-center justify-center gap-3 rounded-3xl rounded-es-lg bg-coral-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-coral-500/30 transition-all hover:-translate-y-0.5 hover:bg-coral-400"
+            className="group relative inline-flex w-full items-center justify-center gap-3 rounded-3xl rounded-es-lg bg-whatsapp-500 px-6 py-4 text-base font-bold text-white shadow-xl shadow-whatsapp-500/30 transition-all hover:-translate-y-0.5 hover:bg-whatsapp-400"
           >
             <span className="relative flex size-6 shrink-0 items-center justify-center">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-6">

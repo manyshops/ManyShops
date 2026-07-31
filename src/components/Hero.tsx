@@ -117,7 +117,7 @@ export function Hero() {
                 </a>
               </div>
 
-              <dl className="hero-reveal gsap-prepare mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-navy-900/10 pt-6">
+              <dl className="hero-reveal gsap-prepare mt-10 grid max-w-md grid-cols-1 gap-4 border-t border-navy-900/10 pt-6 sm:grid-cols-3">
                 {PROOF.map((item) => (
                   <div key={item.key}>
                     <dt className="numeric flex items-baseline text-2xl font-extrabold tracking-tight text-navy-950">

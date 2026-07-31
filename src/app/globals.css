@@ -26,6 +26,10 @@
   --color-coral-400: #ff7a63;
   --color-coral-100: #ffe2dc;
 
+  /* WhatsApp's own green, used only for the WhatsApp confirm action. */
+  --color-whatsapp-500: #25d366;
+  --color-whatsapp-400: #4ade80;
+
   --color-sand-50: #f8fafc;
   --color-sand-100: #eef2f7;
   --color-sand-200: #dde5ee;
