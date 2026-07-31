@@ -10,6 +10,8 @@ import type { Quote } from '@/lib/quote-types';
 export type CartItem = {
   id: string;
   quote: Quote;
+  /** Free-text size/colour/variant the customer types themselves — stores publish this in too many shapes to scrape reliably. */
+  note: string;
 };
 
 type Props = {
@@ -17,10 +19,18 @@ type Props = {
   active: boolean;
   whatsappUrl: string | null;
   onRemove: (id: string) => void;
+  onNoteChange: (id: string, note: string) => void;
   onAddAnother: () => void;
 };
 
-export function CartPanel({ items, active, whatsappUrl, onRemove, onAddAnother }: Props) {
+export function CartPanel({
+  items,
+  active,
+  whatsappUrl,
+  onRemove,
+  onNoteChange,
+  onAddAnother
+}: Props) {
   const t = useTranslations('cart');
   const locale = useLocale();
   const root = useRef<HTMLDivElement>(null);
@@ -94,6 +104,13 @@ export function CartPanel({ items, active, whatsappUrl, onRemove, onAddAnother }
                     </span>
                   )}
                 </p>
+                <input
+                  type="text"
+                  value={item.note}
+                  onChange={(event) => onNoteChange(item.id, event.target.value)}
+                  placeholder={t('notePlaceholder')}
+                  className="mt-1 w-full border-0 border-b border-dashed border-navy-900/15 bg-transparent py-0.5 text-xs text-navy-800/70 outline-none placeholder:text-navy-800/35 focus:border-teal-500"
+                />
               </div>
               <span className="numeric shrink-0 text-base font-bold text-navy-900">
                 {usd(item.quote.breakdown.totalUsd)}

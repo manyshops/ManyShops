@@ -13,17 +13,26 @@ export function operationsNumber(): string | null {
   return raw && raw.length >= 8 ? raw : null;
 }
 
-export function buildCartMessage(quotes: Quote[], locale: string): string {
+export type CartEntry = {
+  quote: Quote;
+  /** Size, colour, or any other variant the customer typed in themselves. */
+  note: string;
+};
+
+export function buildCartMessage(items: CartEntry[], locale: string): string {
   const money = (value: number) => formatUsd(value, 'en');
-  const total = quotes.reduce((sum, quote) => sum + quote.breakdown.totalUsd, 0);
+  const total = items.reduce((sum, item) => sum + item.quote.breakdown.totalUsd, 0);
 
   const lines =
     locale === 'ar' ? ['طلب جديد من ManyShops (مؤكد)', ''] : ['New ManyShops order (confirmed)', ''];
 
-  quotes.forEach((quote, index) => {
+  items.forEach(({ quote, note }, index) => {
     const title = quote.product.title || quote.store.brand;
+    lines.push(locale === 'ar' ? `${index + 1}) ${title}` : `${index + 1}) ${title}`);
+    if (note.trim()) {
+      lines.push(locale === 'ar' ? `المقاس/التفصيل: ${note.trim()}` : `Size/variant: ${note.trim()}`);
+    }
     lines.push(
-      locale === 'ar' ? `${index + 1}) ${title}` : `${index + 1}) ${title}`,
       locale === 'ar' ? `الرابط: ${quote.store.url}` : `Link: ${quote.store.url}`,
       locale === 'ar'
         ? `الكمية: ${quote.breakdown.quantity}`
@@ -38,8 +47,8 @@ export function buildCartMessage(quotes: Quote[], locale: string): string {
   return lines.join('\n');
 }
 
-export function buildCartWhatsAppLink(quotes: Quote[], locale: string): string | null {
+export function buildCartWhatsAppLink(items: CartEntry[], locale: string): string | null {
   const number = operationsNumber();
-  if (!number || quotes.length === 0) return null;
-  return `https://wa.me/${number}?text=${encodeURIComponent(buildCartMessage(quotes, locale))}`;
+  if (!number || items.length === 0) return null;
+  return `https://wa.me/${number}?text=${encodeURIComponent(buildCartMessage(items, locale))}`;
 }
