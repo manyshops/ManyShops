@@ -1,9 +1,10 @@
-import type { Order } from './orders';
 import { formatUsd } from './pricing';
+import type { Quote } from './quote-types';
 
 /**
- * Builds the wa.me handoff. The customer confirms the order in WhatsApp, which
- * is where this business already talks to people — there is no payment gateway.
+ * Builds the wa.me handoff. The customer confirms the whole cart in
+ * WhatsApp, which is where this business already talks to people — there is
+ * no payment gateway and no order form; WhatsApp is the checkout.
  */
 
 /** Operations number. Digits only, country code included, no `+`. */
@@ -12,66 +13,33 @@ export function operationsNumber(): string | null {
   return raw && raw.length >= 8 ? raw : null;
 }
 
-/**
- * The customer sends this message themselves, so it carries the delivered
- * total and nothing else about how that total is built. The full breakdown
- * stays on the stored order record for operations.
- */
-export function buildOrderMessage(order: Order, locale: string): string {
-  const { customer, item } = { customer: order.customer, item: order.item };
+export function buildCartMessage(quotes: Quote[], locale: string): string {
   const money = (value: number) => formatUsd(value, 'en');
+  const total = quotes.reduce((sum, quote) => sum + quote.breakdown.totalUsd, 0);
 
-  if (locale === 'ar') {
-    return [
-      `طلب جديد من ManyShops`,
-      `الرقم المرجعي: ${order.reference}`,
-      ``,
-      `المتجر: ${item.storeBrand}`,
-      item.title ? `المنتج: ${item.title}` : null,
-      `الرابط: ${item.productUrl}`,
-      `الكمية: ${item.quantity}`,
-      item.note ? `ملاحظة: ${item.note}` : null,
-      ``,
-      `الإجمالي عند الاستلام: ${money(order.totalUsd)}`,
-      `(شامل المنتج والخدمة والشحن والتغليف)`,
-      ``,
-      `الاسم: ${customer.fullName}`,
-      `الهاتف: ${customer.phoneE164}`,
-      `المنطقة: ${customer.region}`,
-      `العنوان: ${customer.address}`,
-      customer.landmark ? `علامة مميزة: ${customer.landmark}` : null
-    ]
-      .filter((line) => line !== null)
-      .join('\n');
-  }
+  const lines =
+    locale === 'ar' ? ['طلب جديد من ManyShops (مؤكد)', ''] : ['New ManyShops order (confirmed)', ''];
 
-  return [
-    `New ManyShops order`,
-    `Reference: ${order.reference}`,
-    ``,
-    `Store: ${item.storeBrand}`,
-    item.title ? `Product: ${item.title}` : null,
-    `Link: ${item.productUrl}`,
-    `Quantity: ${item.quantity}`,
-    item.note ? `Note: ${item.note}` : null,
-    ``,
-    `Total cash on delivery: ${money(order.totalUsd)}`,
-    `(product, service, shipping and packaging included)`,
-    ``,
-    `Name: ${customer.fullName}`,
-    `Phone: ${customer.phoneE164}`,
-    `Region: ${customer.region}`,
-    `Address: ${customer.address}`,
-    customer.landmark ? `Landmark: ${customer.landmark}` : null
-  ]
-    .filter((line) => line !== null)
-    .join('\n');
+  quotes.forEach((quote, index) => {
+    const title = quote.product.title || quote.store.brand;
+    lines.push(
+      locale === 'ar' ? `${index + 1}) ${title}` : `${index + 1}) ${title}`,
+      locale === 'ar' ? `الرابط: ${quote.store.url}` : `Link: ${quote.store.url}`,
+      locale === 'ar'
+        ? `الكمية: ${quote.breakdown.quantity}`
+        : `Quantity: ${quote.breakdown.quantity}`,
+      locale === 'ar' ? `السعر: ${money(quote.breakdown.totalUsd)}` : `Price: ${money(quote.breakdown.totalUsd)}`,
+      ''
+    );
+  });
+
+  lines.push(locale === 'ar' ? `الإجمالي: ${money(total)}` : `Total: ${money(total)}`);
+
+  return lines.join('\n');
 }
 
-export function buildWhatsAppLink(order: Order, locale: string): string | null {
+export function buildCartWhatsAppLink(quotes: Quote[], locale: string): string | null {
   const number = operationsNumber();
-  if (!number) return null;
-  return `https://wa.me/${number}?text=${encodeURIComponent(
-    buildOrderMessage(order, locale)
-  )}`;
+  if (!number || quotes.length === 0) return null;
+  return `https://wa.me/${number}?text=${encodeURIComponent(buildCartMessage(quotes, locale))}`;
 }

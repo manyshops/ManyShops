@@ -2,25 +2,22 @@
 
 import gsap from 'gsap';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CheckoutValues } from './quote/CheckoutPanel';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   isQuote,
   needsManualPrice,
-  type OrderResult,
   type Quote,
   type QuoteNeedsInput,
   type QuoteResponse
 } from '@/lib/quote-types';
 import { apiUrl } from '@/lib/api-base';
-import { CheckoutPanel } from './quote/CheckoutPanel';
+import { buildCartWhatsAppLink } from '@/lib/whatsapp';
+import { CartPanel, type CartItem } from './quote/CartPanel';
 import { ManualPricePanel } from './quote/ManualPricePanel';
 import { ProcessingOverlay } from './quote/ProcessingOverlay';
-import { ReceiptPanel } from './quote/ReceiptPanel';
-import { SuccessPanel } from './quote/SuccessPanel';
 import { UrlPanel } from './quote/UrlPanel';
 
-type Step = 'input' | 'manual' | 'receipt' | 'checkout' | 'success';
+type Step = 'input' | 'manual' | 'cart';
 
 /**
  * The flip deck.
@@ -48,11 +45,9 @@ export function QuoteFlow() {
   const [quantity, setQuantity] = useState(1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [orderError, setOrderError] = useState<string | null>(null);
 
-  const [quote, setQuote] = useState<Quote | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [manualReason, setManualReason] = useState<QuoteNeedsInput | null>(null);
-  const [order, setOrder] = useState<OrderResult | null>(null);
 
   const visibleFace = turns % 2;
   const currentStep = faces[visibleFace];
@@ -103,47 +98,50 @@ export function QuoteFlow() {
    * Some stores only reveal their sale price to a rendered browser, which takes
    * about half a minute — far too long to hold the customer on a spinner. The
    * quote arrives immediately from the fast read and this watches for the
-   * cheaper figure, which lands a few seconds later. The price only ever falls.
+   * cheaper figure, which lands a few seconds later, for every cart item still
+   * marked `refining`. The price only ever falls.
    */
   useEffect(() => {
-    if (!quote?.refining) return;
+    if (!cart.some((item) => item.quote.refining)) return;
 
     let cancelled = false;
     const startedAt = Date.now();
-    const productUrl = quote.store.url;
-    const quantity = quote.breakdown.quantity;
 
     const timer = window.setInterval(async () => {
       if (cancelled || Date.now() - startedAt > 130_000) {
         window.clearInterval(timer);
         return;
       }
-      try {
-        const response = await fetch(
-          apiUrl(`/api/quote?url=${encodeURIComponent(productUrl)}&quantity=${quantity}`)
-        );
-        if (!response.ok) return;
 
-        const data = (await response.json()) as {
-          status: string;
-          quote?: Quote;
-        };
-        if (cancelled || !data.quote) return;
+      const pending = cart.filter((item) => item.quote.refining);
+      await Promise.all(
+        pending.map(async (item) => {
+          try {
+            const response = await fetch(
+              apiUrl(
+                `/api/quote?url=${encodeURIComponent(item.quote.store.url)}&quantity=${item.quote.breakdown.quantity}`
+              )
+            );
+            if (!response.ok) return;
 
-        if (data.status === 'settled') {
-          window.clearInterval(timer);
-          setQuote(data.quote);
-        }
-      } catch {
-        // Transient failure; the existing quote remains valid.
-      }
+            const data = (await response.json()) as { status: string; quote?: Quote };
+            if (cancelled || !data.quote || data.status !== 'settled') return;
+
+            setCart((previous) =>
+              previous.map((entry) => (entry.id === item.id ? { ...entry, quote: data.quote! } : entry))
+            );
+          } catch {
+            // Transient failure; the existing quote remains valid.
+          }
+        })
+      );
     }, 2500);
 
     return () => {
       cancelled = true;
       window.clearInterval(timer);
     };
-  }, [quote?.refining, quote?.store.url, quote?.breakdown.quantity]);
+  }, [cart]);
 
   async function requestQuote(manualPriceTry?: number) {
     setBusy(true);
@@ -159,9 +157,11 @@ export function QuoteFlow() {
       const data = (await response.json()) as QuoteResponse;
 
       if (isQuote(data)) {
-        setQuote(data);
+        setCart((previous) => [...previous, { id: crypto.randomUUID(), quote: data }]);
         setManualReason(null);
-        flipTo('receipt');
+        setUrl('');
+        setQuantity(1);
+        flipTo('cart');
         scrollIntoView();
         return;
       }
@@ -183,62 +183,29 @@ export function QuoteFlow() {
     }
   }
 
-  async function submitOrder(values: CheckoutValues) {
-    if (!quote) return;
-    setBusy(true);
-    setOrderError(null);
-
-    try {
-      const response = await fetch(apiUrl('/api/orders'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          locale,
-          customer: {
-            fullName: values.fullName,
-            phone: values.phone,
-            region: values.region,
-            address: values.address,
-            landmark: values.landmark
-          },
-          item: {
-            productUrl: quote.store.url,
-            title: quote.product.title,
-            imageUrl: quote.product.imageUrl,
-            quantity: quote.breakdown.quantity,
-            note: values.note,
-            unitPriceTry: quote.breakdown.unitPriceTry,
-            estimatedWeightKg: quote.weight.weightKg,
-            weightMethod: quote.weight.method
-          }
-        })
-      });
-
-      if (!response.ok) {
-        setOrderError(t('orderFailed'));
-        return;
-      }
-
-      setOrder((await response.json()) as OrderResult);
-      flipTo('success');
-      scrollIntoView();
-    } catch {
-      setOrderError(t('network'));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  function reset() {
-    setQuote(null);
-    setManualReason(null);
-    setOrder(null);
-    setError(null);
-    setOrderError(null);
+  function addAnother() {
     setUrl('');
     setQuantity(1);
+    setError(null);
+    setManualReason(null);
+    flipTo('input');
+    scrollIntoView();
+  }
+
+  /** Back from manual price entry: keep the typed link so a typo is a quick fix, not a redo. */
+  function backToInput() {
+    setManualReason(null);
     flipTo('input');
   }
+
+  function removeFromCart(id: string) {
+    setCart((previous) => previous.filter((item) => item.id !== id));
+  }
+
+  const whatsappUrl = useMemo(
+    () => buildCartWhatsAppLink(cart.map((item) => item.quote), locale),
+    [cart, locale]
+  );
 
   function renderStep(step: Step, active: boolean) {
     switch (step) {
@@ -248,32 +215,19 @@ export function QuoteFlow() {
             reason={manualReason}
             busy={busy}
             onSubmit={(price) => void requestQuote(price)}
-            onBack={reset}
+            onBack={backToInput}
           />
         ) : null;
-      case 'receipt':
-        return quote ? (
-          <ReceiptPanel
-            quote={quote}
+      case 'cart':
+        return (
+          <CartPanel
+            items={cart}
             active={active}
-            onContinue={() => flipTo('checkout')}
-            onReset={reset}
+            whatsappUrl={whatsappUrl}
+            onRemove={removeFromCart}
+            onAddAnother={addAnother}
           />
-        ) : null;
-      case 'checkout':
-        return quote ? (
-          <CheckoutPanel
-            quote={quote}
-            busy={busy}
-            submitError={orderError}
-            onSubmit={(values) => void submitOrder(values)}
-            onBack={() => flipTo('receipt')}
-          />
-        ) : null;
-      case 'success':
-        return order ? (
-          <SuccessPanel result={order} active={active} onReset={reset} />
-        ) : null;
+        );
       case 'input':
       default:
         return (
@@ -291,7 +245,7 @@ export function QuoteFlow() {
   }
 
   // The processing state lives on the face the customer is already looking at,
-  // so the flip happens once — on arrival at the receipt — and not before.
+  // so the flip happens once — on arrival at the cart — and not before.
   const showProcessing =
     busy && (currentStep === 'input' || currentStep === 'manual');
 

@@ -56,9 +56,3 @@ export function needsManualPrice(
 ): value is QuoteNeedsInput {
   return 'needsManualPrice' in value && value.needsManualPrice === true;
 }
-
-export type OrderResult = {
-  reference: string;
-  totalUsd: number;
-  whatsappUrl: string | null;
-};
